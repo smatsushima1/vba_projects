@@ -1,0 +1,43 @@
+
+Option Explicit
+
+' Check if file exists
+Dim fso, d_loc
+set fso = createobject("scripting.filesystemobject")
+d_loc = "T:\NRFK\C200\Admin\DIVISION 245\10 PAW\Code 245 Post-Award WIP.xlsm"
+
+wscript.echo
+wscript.echo "Checking if file is present..."
+wscript.echo
+
+If fso.fileexists(d_loc) then
+  wscript.echo "File is in location - proceeding with code..."
+  wscript.echo
+Else
+  wscript.echo "WARNING: File is not in current location"
+  wscript.echo
+  wscript.quit
+End If
+
+' Open object
+wscript.echo "Opening workbook..."
+wscript.echo
+
+Dim e_obj, e_wb
+set e_obj = createobject("Excel.Application")
+e_obj.visible = False
+set e_wb = e_obj.workbooks.open(d_loc, , True)
+
+' Run macro, close, and quit
+wscript.echo "Running macro..."
+wscript.echo
+e_obj.run "rep_gen.repEmGen"
+wscript.echo "Closing workbook..."
+wscript.echo
+e_wb.close false
+
+wscript.echo "Quitting..."
+wscript.echo
+e_obj.quit
+
+'wscript.quit
